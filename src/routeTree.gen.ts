@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SessionsRouteImport } from './routes/sessions'
 import { Route as RiskRouteImport } from './routes/risk'
+import { Route as JournalRouteImport } from './routes/journal'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SessionsRoute = SessionsRouteImport.update({
@@ -23,6 +24,11 @@ const RiskRoute = RiskRouteImport.update({
   path: '/risk',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/journal': typeof JournalRoute
   '/risk': typeof RiskRoute
   '/sessions': typeof SessionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/journal': typeof JournalRoute
   '/risk': typeof RiskRoute
   '/sessions': typeof SessionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/journal': typeof JournalRoute
   '/risk': typeof RiskRoute
   '/sessions': typeof SessionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/risk' | '/sessions'
+  fullPaths: '/' | '/journal' | '/risk' | '/sessions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/risk' | '/sessions'
-  id: '__root__' | '/' | '/risk' | '/sessions'
+  to: '/' | '/journal' | '/risk' | '/sessions'
+  id: '__root__' | '/' | '/journal' | '/risk' | '/sessions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  JournalRoute: typeof JournalRoute
   RiskRoute: typeof RiskRoute
   SessionsRoute: typeof SessionsRoute
 }
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RiskRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  JournalRoute: JournalRoute,
   RiskRoute: RiskRoute,
   SessionsRoute: SessionsRoute,
 }
