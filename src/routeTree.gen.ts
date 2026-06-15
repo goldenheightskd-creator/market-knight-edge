@@ -77,7 +77,14 @@ export interface FileRouteTypes {
   fullPaths: '/' | '/alerts' | '/journal' | '/learn' | '/risk' | '/sessions'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/alerts' | '/journal' | '/learn' | '/risk' | '/sessions'
-  id: '__root__' | '/' | '/alerts' | '/journal' | '/learn' | '/risk' | '/sessions'
+  id:
+    | '__root__'
+    | '/'
+    | '/alerts'
+    | '/journal'
+    | '/learn'
+    | '/risk'
+    | '/sessions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Bell, Plus, Trash2, Volume2, VolumeX, X, Check } from "lucide-react";
-import { Card, NumInput, SectionHeader, Select } from "./index";
+import { Bell, Trash2, Volume2, VolumeX, X, Check } from "lucide-react";
+import { Card, NumInput, SectionHeader } from "./index";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { ASSETS, findAsset } from "@/lib/assets";
 import { fmt } from "@/lib/format";
