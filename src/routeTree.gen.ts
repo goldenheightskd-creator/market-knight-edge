@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SessionsRouteImport } from './routes/sessions'
 import { Route as RiskRouteImport } from './routes/risk'
+import { Route as LearnRouteImport } from './routes/learn'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -22,6 +23,11 @@ const SessionsRoute = SessionsRouteImport.update({
 const RiskRoute = RiskRouteImport.update({
   id: '/risk',
   path: '/risk',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnRoute = LearnRouteImport.update({
+  id: '/learn',
+  path: '/learn',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JournalRoute = JournalRouteImport.update({
@@ -38,12 +44,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/journal': typeof JournalRoute
+  '/learn': typeof LearnRoute
   '/risk': typeof RiskRoute
   '/sessions': typeof SessionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/journal': typeof JournalRoute
+  '/learn': typeof LearnRoute
   '/risk': typeof RiskRoute
   '/sessions': typeof SessionsRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/journal': typeof JournalRoute
+  '/learn': typeof LearnRoute
   '/risk': typeof RiskRoute
   '/sessions': typeof SessionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/journal' | '/risk' | '/sessions'
+  fullPaths: '/' | '/journal' | '/learn' | '/risk' | '/sessions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/journal' | '/risk' | '/sessions'
-  id: '__root__' | '/' | '/journal' | '/risk' | '/sessions'
+  to: '/' | '/journal' | '/learn' | '/risk' | '/sessions'
+  id: '__root__' | '/' | '/journal' | '/learn' | '/risk' | '/sessions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   JournalRoute: typeof JournalRoute
+  LearnRoute: typeof LearnRoute
   RiskRoute: typeof RiskRoute
   SessionsRoute: typeof SessionsRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/risk'
       fullPath: '/risk'
       preLoaderRoute: typeof RiskRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn': {
+      id: '/learn'
+      path: '/learn'
+      fullPath: '/learn'
+      preLoaderRoute: typeof LearnRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/journal': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   JournalRoute: JournalRoute,
+  LearnRoute: LearnRoute,
   RiskRoute: RiskRoute,
   SessionsRoute: SessionsRoute,
 }
