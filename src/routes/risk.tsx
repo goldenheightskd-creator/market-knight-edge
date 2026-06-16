@@ -10,7 +10,11 @@ export const Route = createFileRoute("/risk")({
     meta: [
       { title: "Risk Calculator — Market.knight" },
       { name: "description", content: "Exact dollar risk, position size, R:R and breakeven win rate for futures, forex, crypto and stocks." },
+      { property: "og:title", content: "Risk Calculator — Market.knight" },
+      { property: "og:description", content: "Exact dollar risk, position size, R:R and breakeven win rate for futures, forex, crypto and stocks." },
+      { property: "og:url", content: "https://market-knight-edge.lovable.app/risk" },
     ],
+    links: [{ rel: "canonical", href: "https://market-knight-edge.lovable.app/risk" }],
   }),
   component: RiskPage,
 });
