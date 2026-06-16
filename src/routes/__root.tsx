@@ -70,6 +70,37 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" },
     ],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "Market.knight",
+            "url": "https://market-knight-edge.lovable.app",
+            "description": "Professional ICT-inspired trading command center with level calculator, risk sizing, session clock, trade journal and SMC learning."
+          },
+          {
+            "@type": "Organization",
+            "name": "Market.knight",
+            "url": "https://market-knight-edge.lovable.app"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Market.knight Pro Trading Toolkit",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Any",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "description": "A dark-themed trading toolkit featuring level calculator, ICT command center, risk calculator, screen marker alerts, session planner, trade journal, and interactive SMC learning modules."
+          }
+        ]
+      }),
+    }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
