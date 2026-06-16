@@ -10,7 +10,11 @@ export const Route = createFileRoute("/journal")({
     meta: [
       { title: "Trade Journal — Market.knight" },
       { name: "description", content: "Log trades, track win rate, plan discipline and a 30-day challenge — saved locally on your device." },
+      { property: "og:title", content: "Trade Journal — Market.knight" },
+      { property: "og:description", content: "Log trades, track win rate, plan discipline and a 30-day challenge — saved locally on your device." },
+      { property: "og:url", content: "https://market-knight-edge.lovable.app/journal" },
     ],
+    links: [{ rel: "canonical", href: "https://market-knight-edge.lovable.app/journal" }],
   }),
   component: JournalPage,
 });
