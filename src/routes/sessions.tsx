@@ -8,7 +8,11 @@ export const Route = createFileRoute("/sessions")({
     meta: [
       { title: "Session Clock — Market.knight" },
       { name: "description", content: "Live UTC clock with all 5 trading sessions, kill zones, market activity and Kenya EAT reference." },
+      { property: "og:title", content: "Session Clock — Market.knight" },
+      { property: "og:description", content: "Live UTC clock with all 5 trading sessions, kill zones, market activity and Kenya EAT reference." },
+      { property: "og:url", content: "https://market-knight-edge.lovable.app/sessions" },
     ],
+    links: [{ rel: "canonical", href: "https://market-knight-edge.lovable.app/sessions" }],
   }),
   component: SessionsPage,
 });

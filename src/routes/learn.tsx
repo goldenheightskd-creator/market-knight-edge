@@ -8,7 +8,11 @@ export const Route = createFileRoute("/learn")({
     meta: [
       { title: "Learn — Market.knight" },
       { name: "description", content: "8 interactive candlestick examples teaching trend, BOS, CHOCH and FVG — with a quiz." },
+      { property: "og:title", content: "Learn — Market.knight" },
+      { property: "og:description", content: "8 interactive candlestick examples teaching trend, BOS, CHOCH and FVG — with a quiz." },
+      { property: "og:url", content: "https://market-knight-edge.lovable.app/learn" },
     ],
+    links: [{ rel: "canonical", href: "https://market-knight-edge.lovable.app/learn" }],
     scripts: [{
       type: "application/ld+json",
       children: JSON.stringify({

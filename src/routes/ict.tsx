@@ -9,7 +9,11 @@ export const Route = createFileRoute("/ict")({
     meta: [
       { title: "ICT Command Center — Market.knight" },
       { name: "description", content: "Premium/discount calculator, ICT kill zones, liquidity scanner, daily bias and trade checklist." },
+      { property: "og:title", content: "ICT Command Center — Market.knight" },
+      { property: "og:description", content: "Premium/discount calculator, ICT kill zones, liquidity scanner, daily bias and trade checklist." },
+      { property: "og:url", content: "https://market-knight-edge.lovable.app/ict" },
     ],
+    links: [{ rel: "canonical", href: "https://market-knight-edge.lovable.app/ict" }],
   }),
   component: IctPage,
 });

@@ -9,7 +9,11 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Level Calculator — Market.knight" },
       { name: "description", content: "Generate sorted level maps with round numbers, PDH/PDL/PWH/PWL, kill zones and auto buy/sell setups." },
+      { property: "og:title", content: "Level Calculator — Market.knight" },
+      { property: "og:description", content: "Generate sorted level maps with round numbers, PDH/PDL/PWH/PWL, kill zones and auto buy/sell setups." },
+      { property: "og:url", content: "https://market-knight-edge.lovable.app/" },
     ],
+    links: [{ rel: "canonical", href: "https://market-knight-edge.lovable.app/" }],
   }),
   component: LevelsPage,
 });

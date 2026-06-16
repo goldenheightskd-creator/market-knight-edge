@@ -11,7 +11,11 @@ export const Route = createFileRoute("/alerts")({
     meta: [
       { title: "Screen Marker Alerts — Market.knight" },
       { name: "description", content: "Multi-asset price level alerts with sound, flash and pre-trade checklist." },
+      { property: "og:title", content: "Screen Marker Alerts — Market.knight" },
+      { property: "og:description", content: "Multi-asset price level alerts with sound, flash and pre-trade checklist." },
+      { property: "og:url", content: "https://market-knight-edge.lovable.app/alerts" },
     ],
+    links: [{ rel: "canonical", href: "https://market-knight-edge.lovable.app/alerts" }],
   }),
   component: AlertsPage,
 });
