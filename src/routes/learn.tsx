@@ -9,6 +9,38 @@ export const Route = createFileRoute("/learn")({
       { title: "Learn — Market.knight" },
       { name: "description", content: "8 interactive candlestick examples teaching trend, BOS, CHOCH and FVG — with a quiz." },
     ],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Read SMC Candlestick Patterns",
+        "description": "Learn to identify trend, BOS, CHOCH, and FVG through interactive candlestick examples.",
+        "totalTime": "PT15M",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Identify Uptrend and Downtrend",
+            "text": "Learn to spot higher highs + higher lows (uptrend) and lower highs + lower lows (downtrend)."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Recognize Break of Structure (BOS)",
+            "text": "Identify when price breaks the last swing high or low in the direction of the trend."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Spot Change of Character (CHOCH)",
+            "text": "Detect the first counter-trend break that signals a potential reversal."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Find Fair Value Gaps (FVG)",
+            "text": "Locate 3-candle imbalances that act as magnets for price to return and fill."
+          }
+        ]
+      }),
+    }],
   }),
   component: LearnPage,
 });
