@@ -1,0 +1,15 @@
+# Market.knight
+
+> Precision. Structure. Execution. A professional ICT-inspired trading command center for futures, forex, crypto, indices, and stocks — helping traders identify premium/discount zones, liquidity, market sessions, and manage risk.
+
+Market.knight is a dark-themed trading toolkit built for traders who follow ICT (Inner Circle Trader) concepts. It provides real-time calculators, screen marker alerts, kill zone tracking, educational quizzes, and a trade journal — all designed for mobile and desktop use with persistent local storage.
+
+## Pages
+
+- [Level Calculator](/): Calculate premium, discount, and equilibrium levels for any asset with price-action inputs.
+- [ICT Command Center](/ict): Swing-based premium/discount zones, kill zone dashboard with session countdowns, liquidity scanner (BSL/SSL), daily bias panel, and pre-trade checklist.
+- [Risk Calculator](/risk): Position sizing, dollar risk, R:R ratio, and exact stop/target planning.
+- [Screen Marker Alerts](/alerts): Multi-asset price level alerts with visual flash, audio beeps, pre-trade checklist popups, and alert logging.
+- [Session Planner](/sessions): Schedule, track, and review trading sessions with notes and performance tagging.
+- [Trade Journal](/journal): Log trades with screenshots, tags, and review notes for continuous improvement.
+- [Learn & Quiz](/learn): Interactive candlestick chart lessons on trend, BOS, CHOCH, and FVG with an 8-question quiz and cheat sheet.
