@@ -1,20 +1,24 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { Card, Cell, NumInput, Select, SectionHeader } from "./index";
-import { useLocalStorage } from "@/lib/useLocalStorage";
+import { createFileRoute, useSearch } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { Card, Cell, NumInput, Select, SectionHeader } from "@/components/Prim";
 import { fmt, fmtMoney, fmtPct } from "@/lib/format";
 import { ASSETS } from "@/lib/assets";
+import { useAuthSession, useTrades, useSaveTrade, useDeleteTrade, type Trade } from "@/lib/cloud";
 
 export const Route = createFileRoute("/_authenticated/journal")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    asset: typeof s.asset === "string" ? s.asset : undefined,
+    direction: s.direction === "Long" || s.direction === "Short" ? s.direction : undefined,
+    level: typeof s.level === "string" ? s.level : undefined,
+    new: s.new === "1" || s.new === true ? true : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Trade Journal — Market.knight" },
-      { name: "description", content: "Log trades, track win rate, plan discipline and a 30-day challenge — saved locally on your device." },
+      { name: "description", content: "Log trades, track win rate, plan discipline and a 30-day challenge — synced to your cloud." },
       { property: "og:title", content: "Trade Journal — Market.knight" },
-      { property: "og:description", content: "Log trades, track win rate, plan discipline and a 30-day challenge — saved locally on your device." },
-      { property: "og:url", content: "https://market-knight-edge.lovable.app/journal" },
+      { property: "og:description", content: "Log trades, track win rate, plan discipline and a 30-day challenge — synced to your cloud." },
     ],
-    links: [{ rel: "canonical", href: "https://market-knight-edge.lovable.app/journal" }],
   }),
   component: JournalPage,
 });
@@ -23,35 +27,29 @@ const SETUPS = ["PDH Rejection", "PDL Support", "Round Number", "Confluence", "B
 const EMOTIONS = ["Calm", "Confident", "Anxious", "FOMO", "Revenge", "Focused"];
 type Outcome = "Win" | "Loss" | "Breakeven";
 
-interface Trade {
-  id: string;
-  date: string;
-  asset: string;
-  direction: "Long" | "Short";
-  setup: string;
-  entry: number;
-  stop: number;
-  target: number;
-  exit: number;
-  outcome: Outcome;
-  pnl: number;
-  emotion: string;
-  followedPlan: boolean;
-  notes: string;
-  lesson: string;
-}
-
 function JournalPage() {
-  const [trades, setTrades] = useLocalStorage<Trade[]>("journal.trades", []);
+  const search = useSearch({ from: "/_authenticated/journal" });
+  const { user } = useAuthSession();
+  const { data: trades = [], isLoading } = useTrades(user?.id);
+  const deleteTrade = useDeleteTrade(user?.id);
+
   const [filter, setFilter] = useState<"All" | Outcome>("All");
   const [showForm, setShowForm] = useState(false);
   const [tab, setTab] = useState<"log" | "stats">("log");
+
+  // Auto-open form when arriving from an alert
+  useEffect(() => {
+    if (search.new || search.asset) {
+      setShowForm(true);
+      setTab("log");
+    }
+  }, [search.new, search.asset]);
 
   const filtered = filter === "All" ? trades : trades.filter((t) => t.outcome === filter);
 
   return (
     <div className="space-y-4">
-      <SectionHeader title="Trade Journal" subtitle="What gets measured gets managed." />
+      <SectionHeader title="Trade Journal" subtitle="What gets measured gets managed. Synced to your cloud." />
 
       <div className="grid grid-cols-2 gap-2">
         <button onClick={() => setTab("log")} className={`h-10 rounded-md border text-sm font-bold uppercase tracking-wider ${tab === "log" ? "bg-accent text-accent-foreground border-accent" : "bg-surface border-border text-muted-foreground"}`}>Log</button>
@@ -64,14 +62,23 @@ function JournalPage() {
             {showForm ? "Close Form" : "+ New Trade"}
           </button>
 
-          {showForm && <TradeForm onSave={(t) => { setTrades([t, ...trades]); setShowForm(false); }} />}
+          {showForm && (
+            <TradeForm
+              initialAsset={search.asset}
+              initialDirection={search.direction}
+              initialEntry={search.level}
+              onSaved={() => setShowForm(false)}
+            />
+          )}
 
           <Card title="Trades" subtitle={`${filtered.length} entries`} action={
             <select value={filter} onChange={(e) => setFilter(e.target.value as any)} className="h-8 rounded-md bg-background border border-input px-2 text-xs">
               <option value="All">All</option><option value="Win">Wins</option><option value="Loss">Losses</option><option value="Breakeven">Breakeven</option>
             </select>
           }>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              <div className="text-sm text-muted-foreground text-center py-6">Loading…</div>
+            ) : filtered.length === 0 ? (
               <div className="text-sm text-muted-foreground text-center py-6">No trades yet. Log your first.</div>
             ) : (
               <ul className="space-y-2">
@@ -86,14 +93,14 @@ function JournalPage() {
                       <span className={`mono text-sm font-bold ${t.pnl > 0 ? "text-success" : t.pnl < 0 ? "text-danger" : "text-muted-foreground"}`}>{fmtMoney(t.pnl)}</span>
                     </div>
                     <div className="grid grid-cols-4 gap-1.5 text-[10px]">
-                      <MiniCell label="Entry" v={fmt(t.entry, 4)} />
-                      <MiniCell label="Stop"  v={fmt(t.stop, 4)} />
-                      <MiniCell label="Target" v={fmt(t.target, 4)} />
+                      <MiniCell label="Entry" v={fmt(t.entry ?? 0, 4)} />
+                      <MiniCell label="Stop"  v={fmt(t.stop ?? 0, 4)} />
+                      <MiniCell label="Target" v={fmt(t.target ?? 0, 4)} />
                       <MiniCell label="R:R"  v={fmt(computeRR(t), 2)} />
                     </div>
                     <div className="mt-1.5 flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span>{t.date} · {t.setup} · {t.emotion}</span>
-                      <span className={t.followedPlan ? "text-success" : "text-danger"}>{t.followedPlan ? "Plan ✓" : "No plan ✗"}</span>
+                      <span>{t.trade_date} · {t.setup} · {t.emotion}</span>
+                      <span className={t.followed_plan ? "text-success" : "text-danger"}>{t.followed_plan ? "Plan ✓" : "No plan ✗"}</span>
                     </div>
                     {(t.notes || t.lesson) && (
                       <div className="mt-1.5 space-y-1 text-xs">
@@ -101,7 +108,7 @@ function JournalPage() {
                         {t.lesson && <div className="text-warning"><span className="text-muted-foreground">Lesson:</span> {t.lesson}</div>}
                       </div>
                     )}
-                    <button onClick={() => setTrades(trades.filter((x) => x.id !== t.id))} className="mt-2 text-[11px] text-muted-foreground hover:text-danger">Delete</button>
+                    <button onClick={() => deleteTrade.mutate(t.id)} className="mt-2 text-[11px] text-muted-foreground hover:text-danger">Delete</button>
                   </li>
                 ))}
               </ul>
@@ -116,8 +123,8 @@ function JournalPage() {
 }
 
 function computeRR(t: Trade) {
-  const r = Math.abs(t.entry - t.stop);
-  return r > 0 ? Math.abs(t.target - t.entry) / r : 0;
+  const r = Math.abs((t.entry ?? 0) - (t.stop ?? 0));
+  return r > 0 ? Math.abs((t.target ?? 0) - (t.entry ?? 0)) / r : 0;
 }
 
 function MiniCell({ label, v }: { label: string; v: string }) {
@@ -129,36 +136,42 @@ function MiniCell({ label, v }: { label: string; v: string }) {
   );
 }
 
-function TradeForm({ onSave }: { onSave: (t: Trade) => void }) {
+function TradeForm({ onSaved, initialAsset, initialDirection, initialEntry }: { onSaved: () => void; initialAsset?: string; initialDirection?: "Long" | "Short"; initialEntry?: string }) {
+  const { user } = useAuthSession();
+  const saveTrade = useSaveTrade(user?.id);
   const today = new Date().toISOString().slice(0, 10);
   const [date, setDate] = useState(today);
-  const [asset, setAsset] = useState(ASSETS[0].symbol);
-  const [direction, setDirection] = useState<"Long" | "Short">("Long");
+  const [asset, setAsset] = useState(initialAsset ?? ASSETS[0].symbol);
+  const [direction, setDirection] = useState<"Long" | "Short">(initialDirection ?? "Long");
   const [setup, setSetup] = useState(SETUPS[0]);
-  const [entry, setEntry] = useState(""), [stop, setStop] = useState(""), [target, setTarget] = useState(""), [exit, setExit] = useState("");
+  const [entry, setEntry] = useState(initialEntry ?? "");
+  const [stop, setStop] = useState("");
+  const [target, setTarget] = useState("");
+  const [exit, setExit] = useState("");
   const [pnl, setPnl] = useState("");
   const [outcome, setOutcome] = useState<Outcome>("Win");
   const [emotion, setEmotion] = useState(EMOTIONS[0]);
   const [followedPlan, setFollowedPlan] = useState(true);
-  const [notes, setNotes] = useState(""), [lesson, setLesson] = useState("");
+  const [notes, setNotes] = useState("");
+  const [lesson, setLesson] = useState("");
 
   const e = parseFloat(entry), s = parseFloat(stop), t = parseFloat(target);
   const rr = s !== e ? Math.abs(t - e) / Math.abs(e - s) : 0;
 
   return (
-    <Card title="New Trade">
+    <Card title="New Trade" subtitle={initialAsset ? `Pre-filled from ${initialAsset} alert` : undefined}>
       <div className="grid grid-cols-2 gap-2">
         <label className="flex flex-col gap-1"><span className="text-[11px] uppercase tracking-wider text-muted-foreground">Date</span>
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="mono h-10 rounded-md bg-background border border-input px-2 text-sm" />
         </label>
         <Select label="Asset" value={asset} onChange={setAsset} options={ASSETS.map((a) => ({ value: a.symbol, label: a.symbol }))} />
-        <Select label="Direction" value={direction} onChange={(v) => setDirection(v as any)} options={[{value:"Long",label:"Long"},{value:"Short",label:"Short"}]} />
+        <Select label="Direction" value={direction} onChange={(v) => setDirection(v as any)} options={[{ value: "Long", label: "Long" }, { value: "Short", label: "Short" }]} />
         <Select label="Setup" value={setup} onChange={setSetup} options={SETUPS.map((s) => ({ value: s, label: s }))} />
         <NumInput label="Entry" value={entry} onChange={setEntry} dec={4} />
         <NumInput label="Stop" value={stop} onChange={setStop} dec={4} />
         <NumInput label="Target" value={target} onChange={setTarget} dec={4} />
         <NumInput label="Exit" value={exit} onChange={setExit} dec={4} />
-        <Select label="Outcome" value={outcome} onChange={(v) => setOutcome(v as Outcome)} options={[{value:"Win",label:"Win"},{value:"Loss",label:"Loss"},{value:"Breakeven",label:"Breakeven"}]} />
+        <Select label="Outcome" value={outcome} onChange={(v) => setOutcome(v as Outcome)} options={[{ value: "Win", label: "Win" }, { value: "Loss", label: "Loss" }, { value: "Breakeven", label: "Breakeven" }]} />
         <NumInput label="P&L ($)" value={pnl} onChange={setPnl} dec={2} />
         <Select label="Emotion" value={emotion} onChange={setEmotion} options={EMOTIONS.map((e) => ({ value: e, label: e }))} />
         <label className="flex flex-col gap-1"><span className="text-[11px] uppercase tracking-wider text-muted-foreground">R:R (auto)</span>
@@ -178,15 +191,18 @@ function TradeForm({ onSave }: { onSave: (t: Trade) => void }) {
         <textarea value={lesson} onChange={(e) => setLesson(e.target.value)} rows={2} className="rounded-md bg-background border border-input px-2 py-1.5 text-sm" />
       </label>
       <button
-        onClick={() => {
-          onSave({
-            id: crypto.randomUUID(), date, asset, direction, setup,
-            entry: parseFloat(entry) || 0, stop: parseFloat(stop) || 0, target: parseFloat(target) || 0, exit: parseFloat(exit) || 0,
-            outcome, pnl: parseFloat(pnl) || 0, emotion, followedPlan, notes, lesson,
+        disabled={saveTrade.isPending}
+        onClick={async () => {
+          await saveTrade.mutateAsync({
+            trade_date: date, asset, direction, setup,
+            entry: parseFloat(entry) || null, stop: parseFloat(stop) || null,
+            target: parseFloat(target) || null, exit_price: parseFloat(exit) || null,
+            outcome, pnl: parseFloat(pnl) || 0, emotion, followed_plan: followedPlan, notes, lesson,
           });
+          onSaved();
         }}
-        className="mt-3 w-full h-11 rounded-md bg-success text-background text-sm font-bold uppercase tracking-wider"
-      >Save Trade</button>
+        className="mt-3 w-full h-11 rounded-md bg-success text-background text-sm font-bold uppercase tracking-wider disabled:opacity-50"
+      >{saveTrade.isPending ? "Saving…" : "Save Trade"}</button>
     </Card>
   );
 }
@@ -197,19 +213,11 @@ function Stats({ trades }: { trades: Trade[] }) {
     const wins = trades.filter((t) => t.outcome === "Win").length;
     const losses = trades.filter((t) => t.outcome === "Loss").length;
     const wr = (wins / trades.length) * 100;
-    const totalPnL = trades.reduce((a, t) => a + t.pnl, 0);
-    const planned = trades.filter((t) => t.followedPlan).length;
+    const totalPnL = trades.reduce((a, t) => a + (t.pnl ?? 0), 0);
+    const planned = trades.filter((t) => t.followed_plan).length;
     const disc = (planned / trades.length) * 100;
     const avgRR = trades.reduce((a, t) => a + computeRR(t), 0) / trades.length;
-    // streak
-    const sorted = [...trades].sort((a, b) => (a.date < b.date ? 1 : -1));
-    let streak = 0; let streakType: Outcome | null = null;
-    for (const t of sorted) {
-      if (streakType === null) { streakType = t.outcome; streak = 1; }
-      else if (t.outcome === streakType) streak++;
-      else break;
-    }
-    return { wins, losses, wr, totalPnL, disc, avgRR, streak, streakType };
+    return { wins, losses, wr, totalPnL, disc, avgRR };
   }, [trades]);
 
   const target30 = 30;
@@ -228,7 +236,7 @@ function Stats({ trades }: { trades: Trade[] }) {
             <Cell label="Plan Discipline" value={fmtPct(stats.disc, 0)} tone={stats.disc >= 80 ? "success" : "warning"} />
             <Cell label="Avg R:R" value={fmt(stats.avgRR, 2)} tone={stats.avgRR >= 2 ? "success" : "warning"} />
             <Cell label="Wins / Losses" value={`${stats.wins} / ${stats.losses}`} />
-            <Cell label="Streak" value={`${stats.streak} ${stats.streakType ?? ""}`} tone={stats.streakType === "Win" ? "success" : stats.streakType === "Loss" ? "danger" : undefined} />
+            <Cell label="Total Trades" value={String(trades.length)} />
           </div>
         )}
       </Card>
