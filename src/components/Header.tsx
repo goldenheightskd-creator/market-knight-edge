@@ -1,6 +1,20 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuthSession } from "@/lib/cloud";
 
 export function Header() {
+  const { user } = useAuthSession();
+  const navigate = useNavigate();
+  const avatar = (user?.user_metadata as any)?.avatar_url as string | undefined;
+  const name = ((user?.user_metadata as any)?.full_name as string | undefined) ?? user?.email;
+
+  async function signOut() {
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
+
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-background/80 border-b border-border">
       <div className="flex items-center justify-between px-4 h-14">
@@ -17,13 +31,26 @@ export function Header() {
             <div className="text-[10px] text-muted-foreground tracking-widest uppercase">Pro Trading Toolkit</div>
           </div>
         </Link>
-        <LiveUtc />
+        <div className="flex items-center gap-2">
+          <LiveUtc />
+          {user && (
+            <>
+              {avatar ? (
+                <img src={avatar} alt={name ?? "user"} className="h-7 w-7 rounded-full border border-border" referrerPolicy="no-referrer" />
+              ) : (
+                <div className="h-7 w-7 rounded-full bg-accent/20 text-accent grid place-items-center text-[11px] font-bold">{(name ?? "?").slice(0,1).toUpperCase()}</div>
+              )}
+              <button onClick={signOut} className="h-7 w-7 grid place-items-center rounded-md border border-border bg-surface-2 text-muted-foreground hover:text-danger" aria-label="Sign out" title="Sign out">
+                <LogOut className="h-3.5 w-3.5" />
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );
 }
 
-import { useEffect, useState } from "react";
 function LiveUtc() {
   const [t, setT] = useState<string>("");
   useEffect(() => {
@@ -31,17 +58,16 @@ function LiveUtc() {
       const d = new Date();
       const hh = String(d.getUTCHours()).padStart(2, "0");
       const mm = String(d.getUTCMinutes()).padStart(2, "0");
-      const ss = String(d.getUTCSeconds()).padStart(2, "0");
-      setT(`${hh}:${mm}:${ss}`);
+      setT(`${hh}:${mm} UTC`);
     };
     tick();
-    const i = setInterval(tick, 1000);
+    const i = setInterval(tick, 30000);
     return () => clearInterval(i);
   }, []);
   return (
-    <div className="flex items-center gap-2">
-      <span className="h-2 w-2 rounded-full bg-success animate-pulse" />
-      <span className="mono text-xs text-muted-foreground">{t} UTC</span>
+    <div className="hidden xs:flex items-center gap-1.5">
+      <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+      <span className="mono text-[10px] text-muted-foreground">{t}</span>
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Card, Cell, NumInput, SectionHeader } from "./index";
+import { Card, Cell, NumInput, SectionHeader } from "@/components/Prim";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { fmt } from "@/lib/format";
 
-export const Route = createFileRoute("/ict")({
+export const Route = createFileRoute("/_authenticated/ict")({
   head: () => ({
     meta: [
       { title: "ICT Command Center — Market.knight" },

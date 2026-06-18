@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Card, SectionHeader } from "./index";
+import { Card, SectionHeader } from "@/components/Prim";
 import { fmt } from "@/lib/format";
 
-export const Route = createFileRoute("/sessions")({
+export const Route = createFileRoute("/_authenticated/sessions")({
   head: () => ({
     meta: [
       { title: "Session Clock — Market.knight" },
