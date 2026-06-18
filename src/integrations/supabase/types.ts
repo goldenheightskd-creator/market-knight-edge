@@ -14,7 +14,210 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alerts: {
+        Row: {
+          acknowledged: boolean
+          asset: string
+          direction: string | null
+          id: string
+          level: number | null
+          level_type: string | null
+          note: string | null
+          triggered_at: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged?: boolean
+          asset: string
+          direction?: string | null
+          id?: string
+          level?: number | null
+          level_type?: string | null
+          note?: string | null
+          triggered_at?: string
+          user_id: string
+        }
+        Update: {
+          acknowledged?: boolean
+          asset?: string
+          direction?: string | null
+          id?: string
+          level?: number | null
+          level_type?: string | null
+          note?: string | null
+          triggered_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      asset_levels: {
+        Row: {
+          asset: string
+          id: string
+          levels: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asset: string
+          id?: string
+          levels?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asset?: string
+          id?: string
+          levels?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      checklist_log: {
+        Row: {
+          checked_session: boolean
+          id: string
+          log_date: string
+          marked_levels: boolean
+          risk_calculated: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checked_session?: boolean
+          id?: string
+          log_date?: string
+          marked_levels?: boolean
+          risk_calculated?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checked_session?: boolean
+          id?: string
+          log_date?: string
+          marked_levels?: boolean
+          risk_calculated?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      trades: {
+        Row: {
+          asset: string
+          created_at: string
+          direction: string
+          emotion: string | null
+          entry: number | null
+          exit_price: number | null
+          followed_plan: boolean
+          id: string
+          lesson: string | null
+          notes: string | null
+          outcome: string
+          pnl: number
+          setup: string | null
+          stop: number | null
+          target: number | null
+          trade_date: string
+          user_id: string
+        }
+        Insert: {
+          asset: string
+          created_at?: string
+          direction: string
+          emotion?: string | null
+          entry?: number | null
+          exit_price?: number | null
+          followed_plan?: boolean
+          id?: string
+          lesson?: string | null
+          notes?: string | null
+          outcome: string
+          pnl?: number
+          setup?: string | null
+          stop?: number | null
+          target?: number | null
+          trade_date?: string
+          user_id: string
+        }
+        Update: {
+          asset?: string
+          created_at?: string
+          direction?: string
+          emotion?: string | null
+          entry?: number | null
+          exit_price?: number | null
+          followed_plan?: boolean
+          id?: string
+          lesson?: string | null
+          notes?: string | null
+          outcome?: string
+          pnl?: number
+          setup?: string | null
+          stop?: number | null
+          target?: number | null
+          trade_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          account_size: number | null
+          current_asset: string | null
+          prefs: Json
+          risk_pct: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_size?: number | null
+          current_asset?: string | null
+          prefs?: Json
+          risk_pct?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_size?: number | null
+          current_asset?: string | null
+          prefs?: Json
+          risk_pct?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
