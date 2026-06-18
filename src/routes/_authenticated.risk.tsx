@@ -5,7 +5,7 @@ import { ASSETS, GROUPS, assetsByGroup, findAsset, type AssetGroup } from "@/lib
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { fmt, fmtMoney, fmtPct } from "@/lib/format";
 
-export const Route = createFileRoute("/risk")({
+export const Route = createFileRoute("/_authenticated/risk")({
   head: () => ({
     meta: [
       { title: "Risk Calculator — Market.knight" },

@@ -5,7 +5,7 @@ import { useLocalStorage } from "@/lib/useLocalStorage";
 import { fmt, fmtMoney, fmtPct } from "@/lib/format";
 import { ASSETS } from "@/lib/assets";
 
-export const Route = createFileRoute("/journal")({
+export const Route = createFileRoute("/_authenticated/journal")({
   head: () => ({
     meta: [
       { title: "Trade Journal — Market.knight" },

@@ -6,7 +6,7 @@ import { useLocalStorage } from "@/lib/useLocalStorage";
 import { ASSETS, findAsset } from "@/lib/assets";
 import { fmt } from "@/lib/format";
 
-export const Route = createFileRoute("/alerts")({
+export const Route = createFileRoute("/_authenticated/alerts")({
   head: () => ({
     meta: [
       { title: "Screen Marker Alerts — Market.knight" },

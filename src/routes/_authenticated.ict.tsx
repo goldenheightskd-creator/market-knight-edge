@@ -4,7 +4,7 @@ import { Card, Cell, NumInput, SectionHeader } from "./index";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { fmt } from "@/lib/format";
 
-export const Route = createFileRoute("/ict")({
+export const Route = createFileRoute("/_authenticated/ict")({
   head: () => ({
     meta: [
       { title: "ICT Command Center — Market.knight" },

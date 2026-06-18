@@ -9,182 +9,133 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SessionsRouteImport } from './routes/sessions'
-import { Route as RiskRouteImport } from './routes/risk'
-import { Route as LearnRouteImport } from './routes/learn'
-import { Route as JournalRouteImport } from './routes/journal'
-import { Route as IctRouteImport } from './routes/ict'
-import { Route as AlertsRouteImport } from './routes/alerts'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as SitemapXmlRouteImport } from './routes/sitemap.xml'
+import { Route as AuthenticatedSessionsRouteImport } from './routes/_authenticated.sessions'
+import { Route as AuthenticatedRiskRouteImport } from './routes/_authenticated.risk'
+import { Route as AuthenticatedLevelsRouteImport } from './routes/_authenticated.levels'
+import { Route as AuthenticatedLearnRouteImport } from './routes/_authenticated.learn'
+import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated.journal'
+import { Route as AuthenticatedIctRouteImport } from './routes/_authenticated.ict'
+import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated.alerts'
 
-const SessionsRoute = SessionsRouteImport.update({
-  id: '/sessions',
-  path: '/sessions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RiskRoute = RiskRouteImport.update({
-  id: '/risk',
-  path: '/risk',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LearnRoute = LearnRouteImport.update({
-  id: '/learn',
-  path: '/learn',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JournalRoute = JournalRouteImport.update({
-  id: '/journal',
-  path: '/journal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IctRoute = IctRouteImport.update({
-  id: '/ict',
-  path: '/ict',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AlertsRoute = AlertsRouteImport.update({
-  id: '/alerts',
-  path: '/alerts',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapXmlRoute = SitemapXmlRouteImport.update({
   id: '/sitemap/xml',
   path: '/sitemap/xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSessionsRoute = AuthenticatedSessionsRouteImport.update({
+  id: '/_authenticated/sessions',
+  path: '/sessions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRiskRoute = AuthenticatedRiskRouteImport.update({
+  id: '/_authenticated/risk',
+  path: '/risk',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedLevelsRoute = AuthenticatedLevelsRouteImport.update({
+  id: '/_authenticated/levels',
+  path: '/levels',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedLearnRoute = AuthenticatedLearnRouteImport.update({
+  id: '/_authenticated/learn',
+  path: '/learn',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedJournalRoute = AuthenticatedJournalRouteImport.update({
+  id: '/_authenticated/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIctRoute = AuthenticatedIctRouteImport.update({
+  id: '/_authenticated/ict',
+  path: '/ict',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAlertsRoute = AuthenticatedAlertsRouteImport.update({
+  id: '/_authenticated/alerts',
+  path: '/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/alerts': typeof AlertsRoute
-  '/ict': typeof IctRoute
-  '/journal': typeof JournalRoute
-  '/learn': typeof LearnRoute
-  '/risk': typeof RiskRoute
-  '/sessions': typeof SessionsRoute
+  '/alerts': typeof AuthenticatedAlertsRoute
+  '/ict': typeof AuthenticatedIctRoute
+  '/journal': typeof AuthenticatedJournalRoute
+  '/learn': typeof AuthenticatedLearnRoute
+  '/levels': typeof AuthenticatedLevelsRoute
+  '/risk': typeof AuthenticatedRiskRoute
+  '/sessions': typeof AuthenticatedSessionsRoute
   '/sitemap/xml': typeof SitemapXmlRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/alerts': typeof AlertsRoute
-  '/ict': typeof IctRoute
-  '/journal': typeof JournalRoute
-  '/learn': typeof LearnRoute
-  '/risk': typeof RiskRoute
-  '/sessions': typeof SessionsRoute
+  '/alerts': typeof AuthenticatedAlertsRoute
+  '/ict': typeof AuthenticatedIctRoute
+  '/journal': typeof AuthenticatedJournalRoute
+  '/learn': typeof AuthenticatedLearnRoute
+  '/levels': typeof AuthenticatedLevelsRoute
+  '/risk': typeof AuthenticatedRiskRoute
+  '/sessions': typeof AuthenticatedSessionsRoute
   '/sitemap/xml': typeof SitemapXmlRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/alerts': typeof AlertsRoute
-  '/ict': typeof IctRoute
-  '/journal': typeof JournalRoute
-  '/learn': typeof LearnRoute
-  '/risk': typeof RiskRoute
-  '/sessions': typeof SessionsRoute
+  '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
+  '/_authenticated/ict': typeof AuthenticatedIctRoute
+  '/_authenticated/journal': typeof AuthenticatedJournalRoute
+  '/_authenticated/learn': typeof AuthenticatedLearnRoute
+  '/_authenticated/levels': typeof AuthenticatedLevelsRoute
+  '/_authenticated/risk': typeof AuthenticatedRiskRoute
+  '/_authenticated/sessions': typeof AuthenticatedSessionsRoute
   '/sitemap/xml': typeof SitemapXmlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/alerts'
     | '/ict'
     | '/journal'
     | '/learn'
+    | '/levels'
     | '/risk'
     | '/sessions'
     | '/sitemap/xml'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/alerts'
     | '/ict'
     | '/journal'
     | '/learn'
+    | '/levels'
     | '/risk'
     | '/sessions'
     | '/sitemap/xml'
   id:
     | '__root__'
-    | '/'
-    | '/alerts'
-    | '/ict'
-    | '/journal'
-    | '/learn'
-    | '/risk'
-    | '/sessions'
+    | '/_authenticated/alerts'
+    | '/_authenticated/ict'
+    | '/_authenticated/journal'
+    | '/_authenticated/learn'
+    | '/_authenticated/levels'
+    | '/_authenticated/risk'
+    | '/_authenticated/sessions'
     | '/sitemap/xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AlertsRoute: typeof AlertsRoute
-  IctRoute: typeof IctRoute
-  JournalRoute: typeof JournalRoute
-  LearnRoute: typeof LearnRoute
-  RiskRoute: typeof RiskRoute
-  SessionsRoute: typeof SessionsRoute
+  AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
+  AuthenticatedIctRoute: typeof AuthenticatedIctRoute
+  AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
+  AuthenticatedLearnRoute: typeof AuthenticatedLearnRoute
+  AuthenticatedLevelsRoute: typeof AuthenticatedLevelsRoute
+  AuthenticatedRiskRoute: typeof AuthenticatedRiskRoute
+  AuthenticatedSessionsRoute: typeof AuthenticatedSessionsRoute
   SitemapXmlRoute: typeof SitemapXmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sessions': {
-      id: '/sessions'
-      path: '/sessions'
-      fullPath: '/sessions'
-      preLoaderRoute: typeof SessionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/risk': {
-      id: '/risk'
-      path: '/risk'
-      fullPath: '/risk'
-      preLoaderRoute: typeof RiskRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/learn': {
-      id: '/learn'
-      path: '/learn'
-      fullPath: '/learn'
-      preLoaderRoute: typeof LearnRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/journal': {
-      id: '/journal'
-      path: '/journal'
-      fullPath: '/journal'
-      preLoaderRoute: typeof JournalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ict': {
-      id: '/ict'
-      path: '/ict'
-      fullPath: '/ict'
-      preLoaderRoute: typeof IctRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/alerts': {
-      id: '/alerts'
-      path: '/alerts'
-      fullPath: '/alerts'
-      preLoaderRoute: typeof AlertsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap/xml': {
       id: '/sitemap/xml'
       path: '/sitemap/xml'
@@ -192,17 +143,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapXmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/sessions': {
+      id: '/_authenticated/sessions'
+      path: '/sessions'
+      fullPath: '/sessions'
+      preLoaderRoute: typeof AuthenticatedSessionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/risk': {
+      id: '/_authenticated/risk'
+      path: '/risk'
+      fullPath: '/risk'
+      preLoaderRoute: typeof AuthenticatedRiskRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/levels': {
+      id: '/_authenticated/levels'
+      path: '/levels'
+      fullPath: '/levels'
+      preLoaderRoute: typeof AuthenticatedLevelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/learn': {
+      id: '/_authenticated/learn'
+      path: '/learn'
+      fullPath: '/learn'
+      preLoaderRoute: typeof AuthenticatedLearnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/journal': {
+      id: '/_authenticated/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof AuthenticatedJournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/ict': {
+      id: '/_authenticated/ict'
+      path: '/ict'
+      fullPath: '/ict'
+      preLoaderRoute: typeof AuthenticatedIctRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/alerts': {
+      id: '/_authenticated/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AuthenticatedAlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AlertsRoute: AlertsRoute,
-  IctRoute: IctRoute,
-  JournalRoute: JournalRoute,
-  LearnRoute: LearnRoute,
-  RiskRoute: RiskRoute,
-  SessionsRoute: SessionsRoute,
+  AuthenticatedAlertsRoute: AuthenticatedAlertsRoute,
+  AuthenticatedIctRoute: AuthenticatedIctRoute,
+  AuthenticatedJournalRoute: AuthenticatedJournalRoute,
+  AuthenticatedLearnRoute: AuthenticatedLearnRoute,
+  AuthenticatedLevelsRoute: AuthenticatedLevelsRoute,
+  AuthenticatedRiskRoute: AuthenticatedRiskRoute,
+  AuthenticatedSessionsRoute: AuthenticatedSessionsRoute,
   SitemapXmlRoute: SitemapXmlRoute,
 }
 export const routeTree = rootRouteImport

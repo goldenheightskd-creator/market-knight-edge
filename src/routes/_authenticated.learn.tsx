@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { Card, SectionHeader } from "./index";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 
-export const Route = createFileRoute("/learn")({
+export const Route = createFileRoute("/_authenticated/learn")({
   head: () => ({
     meta: [
       { title: "Learn — Market.knight" },
