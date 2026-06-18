@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Card, SectionHeader } from "./index";
+import { Card, SectionHeader } from "@/components/Prim";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 
 export const Route = createFileRoute("/_authenticated/learn")({

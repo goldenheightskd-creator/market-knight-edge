@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Card, Cell, NumInput, SectionHeader } from "./index";
+import { Card, Cell, NumInput, SectionHeader } from "@/components/Prim";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { fmt } from "@/lib/format";
 
