@@ -4,7 +4,7 @@ import { GROUPS, assetsByGroup, findAsset, type AssetGroup } from "@/lib/assets"
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { fmt } from "@/lib/format";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/levels")({
   head: () => ({
     meta: [
       { title: "Level Calculator — Market.knight" },
